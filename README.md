@@ -20,3 +20,11 @@ This project analyzes retail sales data using SQL in PostgreSQL. The goal is to 
 
 ### SQL Queries & Insights
 
+https://github.com/ghg001/SQL-Sales-Data-Analysis-KMS-Orders/blob/3403530cc01ca2de897bec24f577d514a7799962/km1.sql
+
+### Key Insights
+- technology leads in product categoty by  significant margin
+- Ontario is the top revenue generating regions
+- Furniture struggles in most regions  opportunity for review.
+### Conclusion
+the analysis demonstrates my ability to transform raw transactional data into meaningful insights.
