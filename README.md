@@ -108,7 +108,14 @@ select profit,product_category,year,rank
 from Pr
 where rank = 1
 ```
-
+--Which Corporate Customer placed the most number of orders in 2009 – 2012?
+```sql
+SELECT customer_name,count(order_id)
+FROM kms_orders
+where order_date BETWEEN '2009-01-01' AND '2012-12-31'
+group by customer_name
+order by 2 desc
+```
 
 
 ### SQL Queries & Insights
