@@ -46,6 +46,30 @@ y responsibility as a Business Intelligence Analyst to support the Abuja divisio
 );
 
 ### Business Objectives
+
+--top performing product_categoty in each year
+```sql
+with Pr (profit,product_category,year,rank) as 
+(SELECT sum(profit) as profit, product_category,extract (year from order_date) as year,
+rank() over (partition by extract (year from order_date)order by sum(profit)desc ) as rank
+FROM kms_orders
+group by product_category,extract (year from order_date)
+order by 3,1 desc)
+select profit,product_category,year,rank
+from Pr
+where rank = 1
+```
+
+--break down of profit made by month,accumulating to profit made by year
+```sql
+with Tp (total_profit,month,year) as
+(SELECT sum(profit) as total_profit,extract (month from order_date) as month,extract (year from order_date) as year
+FROM kms_orders
+group by 2,3
+order by 3,2)
+select month,year,total_profit,sum(total_profit) over(partition by year order by month asc )
+from Tp
+```
 - Identify the most profitable product categories.
  ```sql
 SELECT product_category,max (sales)
@@ -86,28 +110,8 @@ ORDER BY SHIP_COST ASC
 LIMIT 1 OFFSET 1
 ```
 
---break down of profit made by month,accumulating to profit made by year
-```sql
-with Tp (total_profit,month,year) as
-(SELECT sum(profit) as total_profit,extract (month from order_date) as month,extract (year from order_date) as year
-FROM kms_orders
-group by 2,3
-order by 3,2)
-select month,year,total_profit,sum(total_profit) over(partition by year order by month asc )
-from Tp
-```
---top performing product_categoty in each year
-```sql
-with Pr (profit,product_category,year,rank) as 
-(SELECT sum(profit) as profit, product_category,extract (year from order_date) as year,
-rank() over (partition by extract (year from order_date)order by sum(profit)desc ) as rank
-FROM kms_orders
-group by product_category,extract (year from order_date)
-order by 3,1 desc)
-select profit,product_category,year,rank
-from Pr
-where rank = 1
-```
+
+
 --Which Corporate Customer placed the most number of orders in 2009 – 2012?
 ```sql
 SELECT customer_name,count(order_id)
