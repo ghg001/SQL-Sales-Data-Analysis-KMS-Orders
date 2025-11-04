@@ -54,7 +54,7 @@ LIMIT 3
 SELECT region,sum(SALES) AS MIN_SALES
 FROM kms_orders
 GROUP BY region
-ORDER BY MIN_SALES A
+ORDER BY MIN_SALES Asc
 LIMIT 3;
 
 
@@ -163,7 +163,16 @@ select month,year,total_profit,sum(total_profit) over(partition by year order by
 from Tp
 
 
-
+--top performing product_categoty in each year
+with Pr (profit,product_category,year,rank) as 
+(SELECT sum(profit) as profit, product_category,extract (year from order_date) as year,
+rank() over (partition by extract (year from order_date)order by sum(profit)desc ) as rank
+FROM kms_orders
+group by product_category,extract (year from order_date)
+order by 3,1 desc)
+select profit,product_category,year,rank
+from Pr
+where rank = 1
 
 
 
